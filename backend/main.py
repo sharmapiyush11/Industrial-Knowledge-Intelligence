@@ -98,14 +98,9 @@ class TaskCreate(BaseModel):
     assignee: Optional[str] = None
 
 # Startup Event: init db, seed if empty, train model
-@app.on_event("startup")
-def startup_event():
-    logger = app.state.logger if hasattr(app.state, 'logger') else None
-    print("Starting Industrial Brain AI Backend...")
-    # Initialize DB schemas
-    init_db()
-    
-    # Auto seed database if empty
+async def run_startup_tasks():
+    await asyncio.sleep(1)
+    print("Running background database seeding and model training...")
     db = next(get_db())
     try:
         seed_data.seed_db_data(db)
@@ -114,10 +109,19 @@ def startup_event():
         # Train Predictive model on seeded data
         pm_agent.train_model(db)
         pm_agent.update_all_asset_scores(db)
+        print("Background database seeding and model training completed successfully!")
     except Exception as e:
-        print(f"Error during startup seeding/training: {e}")
+        print(f"Error during background seeding/training: {e}")
     finally:
         db.close()
+
+@app.on_event("startup")
+async def startup_event():
+    print("Starting Industrial Brain AI Backend...")
+    # Initialize DB schemas immediately so they exist for incoming requests
+    init_db()
+    # Run the heavy operations concurrently in the background
+    asyncio.create_task(run_startup_tasks())
 
 # WebSocket endpoint
 @app.websocket("/ws/alerts")
