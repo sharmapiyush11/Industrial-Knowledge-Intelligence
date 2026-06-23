@@ -93,7 +93,7 @@ def seed_db_data(db: Session):
             "status": status,
             "health_score": round(health, 2),
             "critical_risk": risk
-        })
+        }, save=False)
 
     db.commit()
 
@@ -148,7 +148,7 @@ def seed_db_data(db: Session):
             "title": title,
             "category": cat,
             "version": sop.version
-        })
+        }, save=False)
     db.commit()
 
     # Link some Assets to SOPs in the graph
@@ -156,7 +156,7 @@ def seed_db_data(db: Session):
         # Link asset to 1 or 2 random SOPs
         for _ in range(random.randint(1, 2)):
             rel_sop = random.choice(sop_list)
-            graph_db.add_relationship(asset.id, rel_sop.id, "GOVERNED_BY")
+            graph_db.add_relationship(asset.id, rel_sop.id, "GOVERNED_BY", save=False)
 
     # 3. Seed Maintenance Logs
     technicians = ["John Doe", "Jane Smith", "Mike Kowalski", "Carlos Santana", "Yuki Tanaka", "Ahmed Ali", "Pierre Dubois"]
@@ -202,7 +202,7 @@ def seed_db_data(db: Session):
         graph_db.add_node(tech.lower().replace(" ", "_"), "Personnel", {
             "name": tech,
             "role": "Maintenance Technician"
-        })
+        }, save=False)
 
     # Add a sample of relationships to graph (not all 5000 logs to avoid over-crowding, but a representative subset)
     sample_assets_for_logs = random.sample(assets_list, 150)
@@ -216,10 +216,10 @@ def seed_db_data(db: Session):
                 "status": log.status,
                 "cost": log.cost,
                 "date": log.timestamp.strftime("%Y-%m-%d")
-            })
-            graph_db.add_relationship(asset.id, log_node_id, "HAS_MAINTENANCE")
+            }, save=False)
+            graph_db.add_relationship(asset.id, log_node_id, "HAS_MAINTENANCE", save=False)
             tech_node_id = log.technician.lower().replace(" ", "_")
-            graph_db.add_relationship(tech_node_id, log_node_id, "PERFORMED")
+            graph_db.add_relationship(tech_node_id, log_node_id, "PERFORMED", save=False)
 
     # 4. Seed Inspection Reports
     inspectors = ["Alice Vance (Auditor)", "Bob Builder (Compliance)", "Charlie Green (Safety Lead)", "Diana Prince (Chief Inspector)"]
@@ -277,19 +277,19 @@ def seed_db_data(db: Session):
             "status": rpt.status,
             "findings": rpt.findings[:60] + "...",
             "expiry": rpt.cert_expiry.strftime("%Y-%m-%d")
-        })
-        graph_db.add_relationship(rpt.asset_id, rpt_node_id, "HAS_INSPECTION")
+        }, save=False)
+        graph_db.add_relationship(rpt.asset_id, rpt_node_id, "HAS_INSPECTION", save=False)
         
         # If inspection is "Flagged" or "Fail", link to compliance check
         if rpt.status in ["Fail", "Flagged"]:
-            graph_db.add_relationship(rpt_node_id, "COMP-VIOLATION", "VIOLATED_COMPLIANCE")
+            graph_db.add_relationship(rpt_node_id, "COMP-VIOLATION", "VIOLATED_COMPLIANCE", save=False)
 
     # Seed global Compliance Violation Node
     graph_db.add_node("COMP-VIOLATION", "ComplianceRequirement", {
         "title": "Industrial Environmental and Emissions Safety Compliance (Section 12)",
         "regulatory_ref": "EPA Code 40 CFR / ASME Section I",
         "description": "Compliance limits governing safety valve operations, leak tolerances, and boiler pressure vessels."
-    })
+    }, save=False)
 
     # 5. Seed Incident Reports
     incident_types = [
@@ -333,12 +333,15 @@ def seed_db_data(db: Session):
             "severity": inc.severity,
             "date": inc.timestamp.strftime("%Y-%m-%d"),
             "root_cause": inc.root_cause
-        })
-        graph_db.add_relationship(inc.asset_id, inc_node_id, "SUFFERED_FAILURE")
+        }, save=False)
+        graph_db.add_relationship(inc.asset_id, inc_node_id, "SUFFERED_FAILURE", save=False)
         
         # Link failure to specific SOP if applicable
         if "SOP" in inc.description or random.random() < 0.3:
             random_sop = random.choice(sop_list)
-            graph_db.add_relationship(inc_node_id, random_sop.id, "REQUIRES_PROCEDURE")
+            graph_db.add_relationship(inc_node_id, random_sop.id, "REQUIRES_PROCEDURE", save=False)
+
+    # Save to local store fallback once at the end of seeding
+    graph_db.local_store.save()
 
     print("Database seeding completed successfully!")
