@@ -1,0 +1,11 @@
+{
+  "name": "industrial-brain-root",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "next": "^15.5.19"
+  },
+  "scripts": {
+    "build": "npm --prefix frontend run build"
+  }
+}
