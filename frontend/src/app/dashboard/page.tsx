@@ -330,7 +330,7 @@ export default function DashboardPage() {
           </div>
           <div className="h-64 flex justify-center">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart cx="50%" cy="50%" r="80%" data={radarData}>
+              <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
                 <PolarGrid stroke="rgba(0, 210, 255, 0.1)" />
                 <PolarAngleAxis dataKey="subject" stroke="#64748b" fontSize={10} />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#64748b" fontSize={8} />
