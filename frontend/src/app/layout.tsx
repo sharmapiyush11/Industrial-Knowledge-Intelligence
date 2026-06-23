@@ -36,6 +36,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   // WebSocket Connection for Real-Time Alerts
   useEffect(() => {
+    // Non-blocking ping to wake up Render backend from sleep (pre-warm cold starts)
+    if (API_BASE) {
+      fetch(`${API_BASE}/api/dashboard/kpis`).catch((err) => {
+        console.log("Pre-warming backend...", err);
+      });
+    }
+
     const wsUrl = WS_BASE;
     let socket: WebSocket | null = null;
     let reconnectTimeout: any;
