@@ -1,6 +1,11 @@
 # Industrial Brain AI
 ### Unified Asset & Operations Knowledge Intelligence Platform
 
+🚀 **Live Production Demo**: [https://industrial-knowledge-intelligence-7.vercel.app](https://industrial-knowledge-intelligence-7.vercel.app)
+⚡ **Live Backend API**: [https://industrial-knowledge-intelligence-7.onrender.com/docs](https://industrial-knowledge-intelligence-7.onrender.com/docs)
+
+---
+
 **Industrial Brain AI** is an enterprise-grade AI platform that transforms fragmented industrial operations knowledge (SOPs, P&IDs, CAD diagrams, maintenance logs, inspection checklists, and safety manuals) into a single, cohesive, searchable operations intelligence system.
 
 Built for asset-intensive sectors (manufacturing, oil & gas, mining, chemical, and pharma), the platform combines dynamic graph networks (Neo4j), vector embeddings (ChromaDB), and custom machine learning classification models to run predictive analytics, safety gap analysis, and interactive Root Cause Analysis (RCA).
@@ -113,9 +118,9 @@ When exploring the platform, be sure to check these high-impact features:
 
 ---
 
-## 🌐 Production Deployment (Vercel & Railway/Render)
+## 🌐 Live Production Deployments
 
-To deploy this application to production:
-- Host the **Next.js Frontend** on Vercel.
-- Host the **FastAPI Backend** on Render, Railway, or fly.io (to support WebSockets).
-- Consult the step-by-step instructions in the [Production Deployment Guide](file:///C:/Users/parth/.gemini/antigravity-ide/brain/eba62972-fd41-41d1-9dbb-f6f5a4724bfe/deployment_guide.md) to set up your URLs and environment variables.
+The platform has been fully deployed to production:
+- **Frontend (Vercel)**: [https://industrial-knowledge-intelligence-7.vercel.app](https://industrial-knowledge-intelligence-7.vercel.app)
+- **Backend (Render)**: [https://industrial-knowledge-intelligence-7.onrender.com](https://industrial-knowledge-intelligence-7.onrender.com)
+- **Interactive Swagger Docs**: [https://industrial-knowledge-intelligence-7.onrender.com/docs](https://industrial-knowledge-intelligence-7.onrender.com/docs)
