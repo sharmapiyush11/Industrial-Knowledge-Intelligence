@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "../config";
 import { 
   Activity, 
   ShieldCheck, 
@@ -67,14 +68,14 @@ export default function DashboardPage() {
     setIsLoading(true);
     try {
       // Fetch KPIs
-      const res = await fetch("/api/dashboard/kpis");
+      const res = await fetch(`${API_BASE}/api/dashboard/kpis`);
       if (res.ok) {
         const data = await res.json();
         setKpis(data);
       }
 
       // Fetch critical assets
-      const resAssets = await fetch("/api/assets?status=Critical");
+      const resAssets = await fetch(`${API_BASE}/api/assets?status=Critical`);
       if (resAssets.ok) {
         const dataAssets = await resAssets.json();
         setCriticalAssets(dataAssets.slice(0, 5));

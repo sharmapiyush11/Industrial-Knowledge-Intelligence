@@ -19,6 +19,7 @@ import {
   Database 
 } from "lucide-react";
 import "./globals.css";
+import { API_BASE, WS_BASE } from "./config";
 
 interface Alert {
   id: string;
@@ -35,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   // WebSocket Connection for Real-Time Alerts
   useEffect(() => {
-    const wsUrl = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_WS_URL || `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//127.0.0.1:8000/ws/alerts`) : '';
+    const wsUrl = WS_BASE;
     let socket: WebSocket | null = null;
     let reconnectTimeout: any;
 
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const handleSeedDemoData = async () => {
     setIsDemoLoading(true);
     try {
-      const response = await fetch("/api/demo/seed", { method: "POST" });
+      const response = await fetch(`${API_BASE}/api/demo/seed`, { method: "POST" });
       const data = await response.json();
       if (response.ok) {
         // Broadcast local notification

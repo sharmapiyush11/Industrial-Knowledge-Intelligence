@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { API_BASE } from "../config";
 import { 
   Search, 
   Filter, 
@@ -64,7 +65,7 @@ function AssetExplorerContent() {
   const fetchAssetList = async () => {
     setIsLoadingList(true);
     try {
-      let url = "/api/assets";
+      let url = `${API_BASE}/api/assets`;
       const params = [];
       if (plantFilter) params.push(`plant=${encodeURIComponent(plantFilter)}`);
       if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
@@ -94,7 +95,7 @@ function AssetExplorerContent() {
   const fetchAssetDetails = async (id: string) => {
     setIsLoadingDetail(true);
     try {
-      const res = await fetch(`/api/assets/${id}`);
+      const res = await fetch(`${API_BASE}/api/assets/${id}`);
       if (res.ok) {
         const data = await res.json();
         setAssetDetail(data);

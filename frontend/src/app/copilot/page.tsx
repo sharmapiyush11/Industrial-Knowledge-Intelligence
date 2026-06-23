@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "../config";
 import { 
   Send, 
   Mic, 
@@ -116,7 +117,7 @@ export default function CopilotPage() {
     setIsThinking(true);
 
     try {
-      const response = await fetch("/api/copilot/ask", {
+      const response = await fetch(`${API_BASE}/api/copilot/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: textToSend })

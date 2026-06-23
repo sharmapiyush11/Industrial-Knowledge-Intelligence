@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { API_BASE } from "../config";
 import { 
   ShieldCheck, 
   ShieldAlert, 
@@ -43,7 +44,7 @@ export default function ComplianceCenterPage() {
   const fetchComplianceAudit = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/compliance/audit");
+      const res = await fetch(`${API_BASE}/api/compliance/audit`);
       if (res.ok) {
         const data = await res.json();
         setAudit(data);

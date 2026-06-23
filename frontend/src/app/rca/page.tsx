@@ -18,6 +18,7 @@ import {
   ArrowRight,
   ListFilter
 } from "lucide-react";
+import { API_BASE } from "../config";
 
 export default function RcaPage() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -42,7 +43,7 @@ export default function RcaPage() {
 
   const fetchAssets = async () => {
     try {
-      const res = await fetch("/api/assets");
+      const res = await fetch(`${API_BASE}/api/assets`);
       if (res.ok) {
         const data = await res.json();
         setAssets(data);
@@ -58,7 +59,7 @@ export default function RcaPage() {
     setAnalysisRan(false);
 
     try {
-      const res = await fetch("/api/rca/analyze", {
+      const res = await fetch(`${API_BASE}/api/rca/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description, asset_id: assetId })

@@ -16,6 +16,7 @@ import {
   Activity
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "../config";
 
 interface DocumentItem {
   id: string;
@@ -49,7 +50,7 @@ export default function DocumentManagementPage() {
 
   const fetchDocuments = async () => {
     try {
-      const res = await fetch("/api/documents/list");
+      const res = await fetch(`${API_BASE}/api/documents/list`);
       if (res.ok) {
         const data = await res.json();
         setDocuments(data);
@@ -138,7 +139,7 @@ export default function DocumentManagementPage() {
     formData.append("doc_type", docType);
 
     try {
-      const res = await fetch("/api/documents/upload", {
+      const res = await fetch(`${API_BASE}/api/documents/upload`, {
         method: "POST",
         body: formData
       });

@@ -11,6 +11,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { Network, Search, RefreshCw, X, Tag, FileText, User, HelpCircle } from "lucide-react";
+import { API_BASE } from "../config";
 
 export default function KnowledgeGraphPage() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -27,7 +28,7 @@ export default function KnowledgeGraphPage() {
   const fetchGraphData = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/graph/data");
+      const res = await fetch(`${API_BASE}/api/graph/data`);
       if (res.ok) {
         const data = await res.json();
         

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_BASE } from "../config";
 import { Shield, Key, Mail, User, ShieldAlert, Cpu } from "lucide-react";
 
 export default function LoginPage() {
@@ -21,7 +22,7 @@ export default function LoginPage() {
 
     if (isLogin) {
       try {
-        const response = await fetch("/api/auth/login", {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password })
@@ -47,7 +48,7 @@ export default function LoginPage() {
       formData.append("role", role);
 
       try {
-        const response = await fetch("/api/auth/signup", {
+        const response = await fetch(`${API_BASE}/api/auth/signup`, {
           method: "POST",
           body: formData
         });
